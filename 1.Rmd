@@ -1,0 +1,79 @@
+---
+title: "glyph map for visualizing spatio‐temporal data Tests"
+author: phinney
+date: March 12, 2024
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library("cubble")
+library("ggplot2")
+```
+
+# About Me
+
+- Name: Yinxiang Huang
+- Email: Hxy903269428\@gmail.com
+- programming Languages: Python, C++, C, R, C\#, Rust, Javascript, Shell, Lua, etc.
+- Tools: Git, AWS, Google Cloud, Google Colab, Jupyter Notebook, etc.
+- Profile: I am new to the open source community and have created pull requests to fix bugs in other open source repositories before. Helping others excites me. Additionally, I've built some small projects for practice out of personal interest. Currently my area of expertise uses R a lot, so I am interested in maintaining R packages. I hope that my mentors will provide me with an opportunity to contribute to the community.
+
+# Test Results
+
+## Easy Test
+
+-   download the `cubble` package and run the glyph map examples (`?geom_glyph`).
+
+- See Figure 1.
+
+![glyph map examples](./screenshot1.jpg){#id .class width=50% height=50%}
+
+## Medium Test
+
+-   read [the Geoms section](https://ggplot2.tidyverse.org/reference/index.html#geoms) in the ggplot2 package reference and other geoms available in the ggplot2 extensions. Create a example that is applicable to be used as a glyph on a map.
+
+I run the following code to create a glyph map for visualizing spatio‐temporal data as examples:
+
+```{r medium1, echo=TRUE, message=FALSE, fig.width=4, fig.height=3}
+# print_p <- GGally::print_if_interactive
+p <- ggplot(data = GGally::nasa,
+            aes(x_major = long, x_minor = day,
+                y_major = lat, y_minor = surftemp)) +
+  geom_glyph_box() +
+  geom_glyph_line() +
+  geom_glyph() +
+  theme_bw()
+# print_p(p)
+# NOTE: print_p cannot show the plot in the Rmd file, so I use print instead.
+print(p)
+```
+
+```{r medium2, echo=TRUE, message=FALSE, fig.width=4, fig.height=3}
+p <- ggplot() +
+  geom_glyph(data = GGally::nasa,
+             aes(x_major = long, x_minor = day,
+                 y_major = lat, y_minor = surftemp),
+             width = rel(0.8), height = 1) +
+  theme_bw()
+print(p)
+```
+
+```{r medium3, echo=TRUE, message=FALSE, fig.width=4, fig.height=3}
+p <-
+  GGally::nasa %>%
+  ggplot(aes(x_major = long, x_minor = day,
+             y_major = lat, y_minor = ozone)) +
+  geom_glyph_box(fill=NA) +
+  geom_glyph_line() +
+  geom_glyph(y_scale = GGally::range01, polar = TRUE)
+print(p)
+```
+
+## Hard Test
+
+- make a small change to geom_glyph in the cubble package and create a pull request.
+
+I created a PR which deleted invalid parameters in the `geom_glyph` function. The PR is [here](https://github.com/huizezhang-sherry/cubble/pull/25).
